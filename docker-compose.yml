@@ -6,8 +6,8 @@ services:
             context: .
         container_name: document-front
         environment:
-            BASE_URL: "http://68.183.212.124:3000/"
+            VUE_APP_BASE_API: "http://68.183.212.124:3000/"
         ports:
-            - "3000:3000"
+            - "3000:8080"
         volumes:
             - ./app
