@@ -1,7 +1,7 @@
 # vue-documents
 ![screenshot](https://github.com/some-yummy-nick/vue-documents/blob/master/document.png)
 
-[Результат](https://some-yummy-documents.netlify.app)
+[Результат](https://some-yummy-documents.onrender.com)
 ## Для сборки в production
 ```
 docker-compose up --build

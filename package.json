@@ -49,5 +49,8 @@
   ],
   "_id": "vue-documents@1.0.0",
   "license": "ISC",
-  "readme": "ERROR: No README data found!"
+  "readme": "ERROR: No README data found!",
+  "engines" : {
+    "node" : ">=18.12.1"
+  }
 }
