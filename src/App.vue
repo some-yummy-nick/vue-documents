@@ -52,6 +52,7 @@ async function getDocuments(q) {
     setDocuments(data);
   } catch (e) {
     console.error(e);
+    alert(e.message)
   } finally {
     setOverlay(false)
   }
