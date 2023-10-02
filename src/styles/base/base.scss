@@ -31,6 +31,12 @@ h1 {
 
 button {
   cursor: pointer;
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+
+  &[disabled]{
+    opacity: 0.5;
+    cursor: initial;
+  }
 }
 
 .reset-btn {

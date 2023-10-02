@@ -1,15 +1,27 @@
 <template>
   <div class="search">
     <h2 class="small-title">Поиск документа</h2>
-    <input type="search" class="input" placeholder="Введите ID документа" @input="handleInput">
+    <input type="search"
+           class="input"
+           placeholder="Введите ID документа"
+           :value="search"
+           @input="handleFieldsInput"
+    >
   </div>
 </template>
 
 <script setup>
-const emit = defineEmits(['handleSearch'])
+import {storeToRefs} from 'pinia'
+import {useSearchStore} from "@/store/search";
+import {useDebounce} from "@/use/debounce";
+
+const searchStore = useSearchStore()
+const {search} = storeToRefs(searchStore)
+const {setSearch} = searchStore
+const handleFieldsInput = useDebounce(handleInput, 500)
 
 function handleInput(e) {
-  emit('handleSearch', e.target.value)
+  setSearch(e.target.value)
 }
 </script>
 

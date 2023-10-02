@@ -1,8 +1,8 @@
 <template>
   <div class="sidebar">
     <div class="sidebar__wrapper">
-      <BaseSearch @handleSearch="handleSearch"/>
-      <BaseDocuments @handleDocument="handleDocument"/>
+      <BaseSearch/>
+      <BaseDocuments/>
     </div>
   </div>
 </template>
@@ -10,16 +10,6 @@
 <script setup>
 import BaseDocuments from "@/components/base-documents.vue"
 import BaseSearch from "@/components/base-search.vue"
-
-function handleSearch(value) {
-  emit('handleSearch', value)
-}
-
-function handleDocument(value) {
-  emit('handleDocument', value)
-}
-
-const emit = defineEmits(['handleSearch', 'handleDocument'])
 </script>
 
 <style scoped lang="scss">

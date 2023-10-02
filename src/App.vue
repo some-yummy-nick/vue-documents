@@ -4,46 +4,46 @@
       <BaseHeader/>
       <BaseOverlay v-if="overlay"/>
       <div class="app__wrapper">
-        <BaseSidebar
-            @handleSearch="handleFieldsInput"
-            @handleDocument="setDocument"
-        />
-        <BaseDocument :document="document"/>
+        <BaseSidebar/>
+        <BaseDocument/>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import {useDebounce} from "@/use/debounce";
+import {watch} from 'vue'
 import {request} from "@/api";
 import {storeToRefs} from 'pinia'
 
 import {useOverlayStore} from "@/store/overlay";
-import {useDocumentStore} from "@/store/documents";
+import {useDocumentsStore} from "@/store/documents";
+import {useDocumentStore} from "@/store/document";
+import {useSearchStore} from "@/store/search";
 
 import BaseHeader from "@/components/base-header.vue"
 import BaseSidebar from "@/components/base-sidebar.vue"
 import BaseDocument from "@/components/base-document.vue"
-import {ref} from "vue";
 
 const overlayStore = useOverlayStore()
 const {overlay} = storeToRefs(overlayStore)
 const {setOverlay} = overlayStore
+const documentsStore = useDocumentsStore()
+const {setDocuments} = documentsStore
+const {documents} = storeToRefs(documentsStore)
 const documentStore = useDocumentStore()
-const {setDocuments} = documentStore
-const handleFieldsInput = useDebounce(handleInput, 500)
-const {documents} = storeToRefs(documentStore)
-const document = ref(null)
+const {setDocument} = documentStore
+const searchStore = useSearchStore()
+const {search} = storeToRefs(searchStore)
 
-function handleInput(value) {
-  if (value) {
-    getDocuments(value)
+watch(search, async () => {
+  if (search.value) {
+    await getDocuments(search.value)
   } else {
-    document.value = null
     setDocuments([])
+    setDocument(null)
   }
-}
+})
 
 async function getDocuments(q) {
   try {
@@ -55,10 +55,6 @@ async function getDocuments(q) {
   } finally {
     setOverlay(false)
   }
-}
-
-function setDocument(id) {
-  document.value = documents.value.find(item => item.id === id)
 }
 </script>
 
@@ -83,6 +79,10 @@ function setDocument(id) {
     border-radius: $border-radius;
   }
 
-
+  @media screen and (max-width: $mobile-width) {
+    &__wrapper {
+      display: block;
+    }
+  }
 }
 </style>

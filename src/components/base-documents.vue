@@ -4,13 +4,17 @@
       <h2 class="small-title">Результаты</h2>
     </div>
     <div class="documents__wrapper" v-if="documents.length">
-      <button class="reset-btn documents__item" v-for="document in documents" :key="document.id"
-              @click="handleDocument(document.id)">
+      <button class="reset-btn documents__item"
+              :class="{active: document ? item.id === document.id : false}"
+              v-for="item in documents"
+              :key="item.id"
+              @click="handleDocument(item.id)"
+      >
         <span class="documents__image">
-          <img class="documents__picture" :src="document.image" :alt="document.description">
+          <img class="documents__picture" :src="item.image" :alt="item.description">
         </span>
         <span class="documents__description">
-          <span class="documents__name">{{ document.name }}</span>
+          <span class="documents__name">{{ item.name }}</span>
           <span class="documents__size">12 MB</span>
         </span>
       </button>
@@ -21,17 +25,20 @@
 
 <script setup>
 import {storeToRefs} from 'pinia'
-import {useDocumentStore} from "@/store/documents";
-import {ref} from "vue";
+import {useDocumentsStore} from "@/store/documents";
+import {useDocumentStore} from "@/store/document";
 
+const documentsStore = useDocumentsStore()
 const documentStore = useDocumentStore()
-const {documents} = storeToRefs(documentStore)
+const {documents} = storeToRefs(documentsStore)
+const {document} = storeToRefs(documentStore)
+const {setDocument} = documentStore
 
 function handleDocument(id) {
-  emit('handleDocument', id);
+  const document = documents.value.find(item => item.id === id)
+  setDocument(document)
 }
 
-const emit = defineEmits(['handleDocument'])
 </script>
 
 <style scoped lang="scss">
@@ -51,6 +58,17 @@ const emit = defineEmits(['handleDocument'])
 
     &:not(:last-child) {
       margin-bottom: 20px;
+    }
+
+    &.active {
+      background-color: $blue-color;
+      color: #fff;
+
+      .documents {
+        &__size {
+          color: #fff;
+        }
+      }
     }
   }
 
@@ -79,7 +97,7 @@ const emit = defineEmits(['handleDocument'])
       border-radius: 10px;
       position: absolute;
       top: 50%;
-      left: -2px;
+      left: 0;
       transform: translateY(-50%);
       background-image: url('@/assets/images/default-image.png');
     }
